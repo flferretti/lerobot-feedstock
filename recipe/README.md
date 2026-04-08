@@ -17,8 +17,6 @@ Almost all the extra in the lerobot package are packaged as `lerobot-*` outputs 
 * `lekiwi`: as indirect dependency `feetech-servo-sdk` is not available on conda-forge
 * `libero`: as the `hf-libero` dependency is not available on conda-forge
 * `metaworld`: as the `metaworld` dependency is not available on conda-forge
-* `groot`: as it is not clear which `flash-attn` and `decord` dependencies 
-         are actually there, and it is not included in `lerobot[all]`
 * `phone`: as `telop` and `hebi-py` are not in conda-forge
 * `wallx`: as it requires `qwen-vl-utils` that is not in conda-forge
 * `sarm`: as it requires `qwen-vl-utils` that is not in conda-forge
@@ -51,6 +49,12 @@ For these reasons, we may patch the upstream `pypi` dependencies metadata of `le
 
 * `pypi` has an upperbound for `placo` due to `D1`, `D4` and `D5`, that is not required in `conda-forge`, so the upper bound is removed.
 
+### `lerobot[groot]`
+
+* `flash-attn` is packaged as a hard dependency of `lerobot-groot`, matching upstream `lerobot[groot]`.
+* The conda-forge `flash-attn` package is CUDA-only, so `lerobot-groot` is only solvable in environments that expose a `__cuda` virtual package. As a consequence, `lerobot-groot` does not run feedstock tests in generic CI and its compatibility must be verified separately in a CUDA-capable solve.
+* `decord` is not available on conda-forge and is not imported by the vendored LeRobot GR00T implementation, so it is omitted from `lerobot-groot`.
+
 ### `lerobot[aloha]`
 
 * `pypi` has an additional dependency on `lerobot[scipy-dep]` to "flatten the dependency tree" (i.e. help on `D1`), so in `conda-forge` we can remove the `lerobot[scipy-dep]` dependency.
@@ -59,3 +63,4 @@ For these reasons, we may patch the upstream `pypi` dependencies metadata of `le
 
 * `pypi` has an additional dependency on `scipy` to "helps pip's resolver " (i.. help on `D1`), so in `conda-forge` we can remove the `scipy` dependency.
 * In `conda-forge`, we remove from `lerobot[all]` all the extras that we do not package in `conda-forge`.
+* `groot` is intentionally not included in the `lerobot-all` output, matching upstream `lerobot[all]`.

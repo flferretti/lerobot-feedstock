@@ -1,6 +1,6 @@
 context:
   version: "0.5.0"
-  build_number: 0
+  build_number: 1
   # This is overridden for consistency with upstream metadata
   python_min: "3.12"
   # These are a subset of the tests that are representative of the different submodules of lerobot
@@ -407,6 +407,23 @@ outputs:
     tests:
       - script:
           - echo "tested in lerobot-tests"
+
+  - package:
+      name: lerobot-groot
+    requirements:
+      host:
+        - python ${{ python_min }}.*
+      run:
+        - python >=${{ python_min }}
+        - ${{ pin_subpackage('lerobot', exact=True) }}
+        - ${{ pin_subpackage('lerobot-transformers-dep', exact=True) }}
+        - ${{ pin_subpackage('lerobot-peft-dep', exact=True) }}
+        - dm-tree >=0.1.8,<1.0.0
+        - timm >=1.0.0,<1.1.0
+        - safetensors >=0.4.3,<1.0.0
+        - pillow >=10.0.0,<13.0.0
+        - ninja >=1.11.1,<2.0.0
+        - flash-attn >=2.5.9,<3.0.0
 
   - package:
       name: lerobot-async
